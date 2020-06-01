@@ -1,0 +1,108 @@
+********Customer Module*************
+
+//To add the customer
+POST http://localhost:8080/api/tourism/add/customer
+
+{"customerFname":"nihir","customerLname":"shah","customerNum":"902-402-3110","customerEmail":"nihir116@gmail.com","customerPassword":"test@1243"}
+
+//To retrieve the customer based on particular id
+GET http://localhost:8080/api/tourism/customer/id
+
+{"customerId":5,"customerFname":"nihir","customerLname":"shah","customerNum":"902-402-3110","customerEmail":"nihir16@gmail.com","customerPassword":"test@1243"}
+
+//To retrieve all customers
+GET http://localhost:8080/api/tourism/customer/allcustomer
+
+[{"customerId":5,"customerFname":"nihir","customerLname":"shah","customerNum":"902-402-3110","customerEmail":"nihir16@gmail.com","customerPassword":"test@1243"},{"customerId":9,"customerFname":"nihir","customerLname":"shah","customerNum":"902-402-3110","customerEmail":"nihir116@gmail.com","customerPassword":"test@1243"}
+
+//To delete particular customers
+DELETE http://localhost:8080/api/tourism/customer/id
+
+//To update customer details
+PUT http://localhost:8080/api/tourism/customer/id
+
+{"customerId":5,"customerFname":"nihir","customerLname":"shah","customerNum":"902-402-3110","customerEmail":"nihir16@gmail.com","customerPassword":"test@1243"}
+
+***********Ticket Module****************
+
+//To generate the ticket
+POST http://localhost:8080/api/tickets/create
+
+//To get ticket by Id
+GET http://localhost:8080/api/tickets/ticket/ticketId
+
+//To get all tickets
+GET http://localhost:8080/api/tickets/ticket/alltickets
+
+//To delete particular ticket
+DELETE http://localhost:8080/api/tickets/ticket/ticketId
+
+//To update particular ticket
+PUT http://localhost:8080/api/tickets/ticket/ticketId
+
+**************Province Module**************************
+
+//To generate the province
+POST http://localhost:8080/api/provinces/create
+
+{"provinceId":1,"provinceName":"Alberta"}
+
+//To get province by Id
+GET http://localhost:8080/api/provinces/Province/ProvinceId
+
+{"provinceId":1,"provinceName":"Alberta"}
+
+//To get all province
+GET http://localhost:8080/api/provinces/Province/allProvinces
+
+[{"provinceId":1,"provinceName":"Alberta"},{"provinceId":2,"provinceName":"British Columbia"},{"provinceId":3,"provinceName":"Manitoba"},{"provinceId":4,"provinceName":"New Brunswick"},{"provinceId":5,"provinceName":"Newfoundland and Labrador"},{"provinceId":6,"provinceName":"Northwest Territories"},{"provinceId":7,"provinceName":"Nova Scotia"},{"provinceId":8,"provinceName":"Nunavut Territory"},{"provinceId":9,"provinceName":"Ontario"},{"provinceId":10,"provinceName":"Prince Edward Island"},{"provinceId":11,"provinceName":"Québec"},{"provinceId":12,"provinceName":"Saskatchewan"},{"provinceId":13,"provinceName":"Yukon Territory"}]
+
+//To delete particular province
+DELETE http://localhost:8080/api/provinces/Province/ProvinceId
+
+//To update particular province
+PUT http://localhost:8080/api/provinces/Province/ProvinceId
+{"provinceId":1,"provinceName":"Alberta"}
+
+*********Beaches Module***********
+
+//To get all the beaches by province Id
+GET http://localhost:8080/api/beaches/province/{id}/beaches
+[{"beachesId":1,"beachesName":"yUOKON","province":{"provinceId":13,"provinceName":"Yukon Territory"}},{"beachesId":2,"beachesName":"Yukon","province":{"provinceId":13,"provinceName":"Yukon Territory"}}]
+
+//To get beach by their id
+GET http://localhost:8080/api/beaches/province/{provinceId}/beach/{id}
+{"beachesId":1,"beachesName":"yUOKON","province":{"provinceId":13,"provinceName":"Yukon Territory"}}
+
+//To add beach based on province id
+POST http://localhost:8080/api/beaches/province/{provinceId}/beach
+{"beachesName":"NewFoundland"}
+
+//To update the beach details
+PUT http://localhost:8080/api/beaches/province/{provinceId}/beach/{id}
+{"beachesId":4, "beachesName":"NewFoundland"}
+
+//To delete the beach entry
+DELETE http://localhost:8080/api/beaches/province/{provinceId}/beach/{id}
+
+
+*********National Park Module***********
+
+//To get all the beaches by province Id
+GET http://localhost:8080/api/NationalPark/province/{id}/NationalPark
+[{"nationalParkId":1,"nationalParkName":"NewFoundland","provinces":{"provinceId":13,"provinceName":"Yukon Territory"}},{"nationalParkId":2,"nationalParkName":"Manitoba","provinces":{"provinceId":13,"provinceName":"Yukon Territory"}}]
+
+//To get beach by their id
+GET http://localhost:8080/api/NationalPark/province/{provinceId}/NationalPark/{id}
+{"nationalParkId":2,"nationalParkName":"Manitoba","provinces":{"provinceId":13,"provinceName":"Yukon Territory"}}
+
+//To add beach based on province id
+POST http://localhost:8080/api/NationalPark/province/{provinceId}/NationalPark
+{"nationalParkName":"NewFoundland"}
+
+//To update the beach details
+PUT http://localhost:8080/api/NationalPark/province/{provinceId}/NationalPark/{id}
+{"nationalParkId":4, "nationalParkName":"NewFoundland"}
+
+//To delete the beach entry
+DELETE http://localhost:8080/api/NationalPark/province/{provinceId}/NationalPark/{id}

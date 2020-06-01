@@ -1,0 +1,13 @@
+{
+    "name": "static_server",
+    "version": "1.0.0",
+    "description": "Container image of static server",
+    "author": "Sanjaykumar Muthukumar (sanjay.m@dal.ca)",
+    "main": "static.js",
+    "scripts": {
+        "start": "node static.js"
+    },
+    "dependencies": {
+        "express": "^4.17.1"
+    }
+}

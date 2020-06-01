@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Home</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Major - 5* Canada Tourism project">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="Stylesheet" type="text/css" href="https://static.travelsca.com/css/jquery-ui.css" />
+    <link rel="Stylesheet" type="text/css" href="https://static.travelsca.com/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://static.travelsca.com/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="https://static.travelsca.com/css/tours.css">
+    <link rel="stylesheet" type="text/css" href="https://static.travelsca.com/css/tours_responsive.css">
+    <link rel="stylesheet" type="text/css" href="https://static.travelsca.com/plugins/font-awesome-4.7.0/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="https://static.travelsca.com/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+    <link rel="stylesheet" type="text/css" href="https://static.travelsca.com/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+    <link rel="stylesheet" type="text/css" href="https://static.travelsca.com/plugins/OwlCarousel2-2.2.1/animate.css">
+    <link rel="stylesheet" type="text/css" href="https://static.travelsca.com/plugins/colorbox/colorbox.css">
+
+    <!-- <link rel="stylesheet" type="text/css" href="https://static.travelsca.com/plugins/font-awesome-4.7.0/css/font-awesome.css"> -->
+
+    <script type="text/javascript" src="https://static.travelsca.com/js/jquery.js"></script>
+    <script type="text/javascript" src="https://static.travelsca.com/js/jquery-ui.js"></script>
+    <script type="text/javascript" src="https://static.travelsca.com/js/login.js"></script>
+    <script type="text/javascript" src="https://static.travelsca.com/js/util.js"></script>
+
+    <script type="text/javascript">
+        var cities = {};
+        var provinces = {};
+        var completeCity;
+        var completeProvince;
+        var errorTimer;
+        const normalColor = {
+            "background-color": "#f1f1f1"
+        };
+        const errorColor = {
+            "background-color": "#fd6666"
+        };
+
+        window.onload = function getData() {
+            isUserLoggedIn(function(name) {
+                $("#loginDiv").hide();
+                $("#logoutDiv #nameSpan").html("Hello " + name);
+                $("#logoutDiv").show();
+                $("#bookings-tab").show();
+            });
+
+            $("#searchBtn").hover(function() {
+                $(this).css({
+                    "background-color": "#2e3f61",
+                    "border-color": "#fff",
+                    "color": "#fff"
+                });
+            }, function() {
+                $(this).stop().animate({
+                    "background-color": "#f1f1f1",
+                    "border-color": "#2e3f61",
+                    "color": "#000"
+                }, 10);
+            });
+
+            sloadCities(function(data, json) {
+                cities = data
+                completeCity = json;
+                loadProvinces(function(data, json) {
+                    provinces = data;
+                    completeProvince = json;
+                    renderHTML(provinces, cities);
+                });
+            });
+        }
+
+        function sloadCities(callback) {
+            var cities = {};
+            $.ajax({
+                url: "/getcities",
+                success: function(result) {
+                    for (var index in result.data) {
+                        var city = result.data[index];
+                        cities[city.cityName] = city.cityId;
+                    }
+                    if (callback) {
+                        callback(cities, result.data);
+                    }
+                }
+            });
+
+        }
+
+        function loadProvinces(callback) {
+            var provinces_arr = {};
+            $.ajax({
+                url: "/getprovinces",
+                success: function(result) {
+                    for (var index in result.data) {
+                        var province = result.data[index];
+                        provinces_arr[province.provinceName] = province.provinceId;
+                    }
+                    if (callback) {
+                        callback(provinces_arr, result.data);
+                    }
+                }
+            });
+        }
+
+        function loadCitiesByProvince(sprovince) {
+            cities = {}
+            var provinceDiv = $("#provinceAuto");
+            var provinceId = provinces[sprovince];
+
+
+            if (!provinceId) {
+                clearTimeout(errorTimer);
+                provinceDiv.css(normalColor);
+                provinceDiv.animate(errorColor, 300);
+                errorTimer = setTimeout(function() {
+                    provinceDiv.animate(normalColor, 500);
+                }, 1000);
+                return;
+            }
+
+            for (var index in completeCity) {
+                var city = completeCity[index];
+                if (city.province.provinceId == provinceId || city.province.provinceId == undefined) {
+                    cities[city.cityName] = city.cityId;
+                }
+            }
+
+            var dataCity = [];
+            const cityAutoCom = $("#cityAuto");
+
+            for (var city in cities) {
+                dataCity[dataCity.length] = city;
+            }
+
+            if (cityAutoCom.length) {
+                autocomplete(cityAutoCom, dataCity, function(cityName) {
+                    var cityId = cities[cityName];
+                    if (!cityId) {
+                        dialogMsg("Error", "Server error. Please try later", function() {
+                            window.location.reload();
+                        }, "30px");
+                        return;
+                    } else {
+                        showLoading();
+                        fetchBeaches(cityId, function(beaches) {
+                            fetchParks(cityId, function(parks) {
+                                hideLoading();
+                                setTimeout(function() {
+                                    fillResult(beaches, parks);
+                                }, 1000);
+                            });
+                        });
+                    }
+                });
+            }
+        }
+
+        function renderHTML() {
+
+            var dataProv = [];
+            var dataCity = [];
+
+            const provinceAutoCom = $("#provinceAuto");
+            const cityAutoCom = $("#cityAuto");
+
+            if (provinceAutoCom.length || cityAutoCom.length) {
+
+
+                for (var province in provinces) {
+                    dataProv[dataProv.length] = province;
+                }
+                for (var city in cities) {
+                    dataCity[dataCity.length] = city;
+                }
+
+                if (provinceAutoCom.length) {
+                    autocomplete(provinceAutoCom, dataProv, function(data) {
+                        $("#cityAuto").attr("disabled", false);
+                        $("#cityAuto").css({
+                            "background-color": "#f1f1f1"
+                        });
+                        resetCity();
+                        loadCitiesByProvince(data);
+                    });
+                }
+            }
+
+        }
+
+        function fillResult(beaches, parks) {
+            if (beaches.length == 0 && parks.length == 0) {
+                dialogMsg("Oops", "There are no beaches/parks in this city !");
+                return;
+            }
+            $("#alllist").empty();
+            if (beaches.length != 0) {
+                for (i = 0; i < beaches.length; i++) {
+                    var main1 = `<div class="col-lg-4">
+					<div class="rooms_item">
+						<div class="rooms_image"><img style="height: 200px;
+                            width: 100%;" src="` + beaches[i].beachimage + `" alt="Red dot"></div>
+						<div style="height: 350px;"class="rooms_title_container text-center">
+							<div class="rooms_title"><h1>` + beaches[i].beachesName + `</h1></div>
+							<div class="rooms_price"><span>` + beaches[i].city.cityName + ", " + beaches[i].city.province.provinceName + `</span></div>
+							<div class="rooms_price"><span>` + beaches[i].beachesDesc + `</span></div>
+						</div>
+					</div>
+				</div>`;
+                    document.getElementById("alllist").innerHTML = document.getElementById("alllist").innerHTML + main1;
+                }
+            }
+            if (parks.length != 0) {
+                for (i = 0; i < parks.length; i++) {
+                    var main = `<div class="col-lg-4" >
+                        <div class="rooms_item">
+                            <div class="rooms_image"><img style="height: 200px;
+                                width: 100%;"  src="` + parks[i].parkimage + `" alt="Red dot"></div>
+                            <div style="height: 350px;" class="rooms_title_container text-center">
+                                <div class="rooms_title"><h1>` + parks[i].nationalParkName + `</h1></div>
+                                <div class="rooms_price"><span>` + parks[i].city.cityName + ", " + parks[i].city.province.provinceName + `</span></div>
+                                <div class="rooms_price"><span>` + parks[i].nationalParkDesc + `</span></div>
+                            </div>
+                        </div>
+                    </div>`;
+                    document.getElementById("alllist").innerHTML = document.getElementById("alllist").innerHTML + main;
+                }
+            }
+        }
+
+        function fetchBeaches(cityId, callback) {
+            $.ajax({
+                url: '/loadbeaches',
+                data: {
+                    "cityId": cityId
+                },
+                type: "POST",
+                success: function(data) {
+                    if (callback) {
+                        callback(data.data);
+                    }
+                },
+                error: function(errorThrown) {
+                    console.log(errorThrown);
+                }
+            });
+        }
+
+        function fetchParks(cityId, callback) {
+            $.ajax({
+                url: '/loadnationalpark',
+                data: {
+                    "cityId": cityId
+                },
+                type: "POST",
+                success: function(data) {
+                    if (callback) {
+                        callback(data.data);
+                    }
+                },
+                error: function(errorThrown) {
+                    console.log(errorThrown);
+                }
+            });
+        }
+
+        function resetCity() {
+            $("#cityAuto").val("");
+        }
+
+        function callLogin(callback) {
+            openLoginDiv(function(data) {
+                var name = data.userFullname;
+                $("#loginDiv").hide();
+                $("#logoutDiv #nameSpan").html("Hello " + name);
+                $("#logoutDiv").show();
+                $("#bookings-tab").show();
+                if (callback) {
+                    callback();
+                }
+            });
+        }
+
+        function callLogout(callback) {
+            userLogout(function() {
+                $("#logoutDiv").hide();
+                $("#logoutDiv #nameSpan").html("Hello !");
+                $("#loginDiv").show();
+                $("#bookings-tab").show();
+                dialogMsg("Logged out", "Successfully logged out !", function() {
+                    if (callback) {
+                        callback();
+                    }
+                    window.location.reload();
+                }, "30px");
+            });
+        }
+
+        function callRegister() {
+            openRegisterDiv();
+        }
+    </script>
+
+</head>
+
+<body>
+
+    <div class="super_container">
+
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="header_content d-flex flex-row align-items-center justify-content-start">
+                            <div class="logo">
+                                <a href="#">
+                                    <div>Canada Tourism</div>
+                                    <div>Explorer and Booking Service</div>
+                                </a>
+                            </div>
+                            <nav class="main_nav" style="width: 80%">
+                                <ul style="width:100%" class="d-flex flex-row align-items-center justify-content-start">
+                                    <div style="width:60%; display:inherit">
+                                        <li class="active"><a href="#">Home</a></li>
+                                        <li><a href="/travel">Travel</a></li>
+                                        <li id="bookings-tab" style="display:none"><a href="/booking">My Bookings</a></li>
+                                    </div>
+                                    <div id="loginDiv" style='width:40%; display: block'>
+                                        <li style='float:right; margin-right:0px'><a onclick="callRegister()" href='#'>Register</li>
+                                        <li style='float:right'><a onclick="callLogin()" href='#'>Login</a></li>
+                                    </div>
+                                    <div id="logoutDiv" style='width:40%; display: none'>
+                                        <li style='float:right; margin-right:0px'><a onclick="callLogout()" href='#'>Logout</a></li>
+                                        <li style='float:right'><a id="nameSpan" style="cursor:default">Hello !</a></li>
+                                    </div>
+                                </ul>
+                            </nav>
+
+                            <div class="hamburger ml-auto"><i class="fa fa-bars" aria-hidden="true"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Menu -->
+
+        <div class="menu">
+            <div class="background_image" style="background-image:url(https://static.travelsca.com/images/home-image.png)"></div>
+            <div class="menu_content d-flex flex-column align-items-center justify-content-center">
+                <ul class="menu_nav_list text-center">
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="booking.html">Booking</a></li>
+                    <li class="active"><a href="accounts.html">Account</a></li>
+                    <li><a href="blog.html">SignIn/SignUp</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Home -->
+
+        <!-- <div class="home">
+            <div class="parallax_background parallax-window" data-parallax="scroll" data-image-src="/images/rooms.jpg" data-speed="0.8"></div>
+            <div class="home_container">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="home_content text-center">
+                                <div class="home_title">
+                                    <h1>Our Tourist Spots</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- Search Box -->
+
+        <div class="search_box" style="margin-top:250px">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div style='height: 150px; padding-right:83px' class="search_box_container d-flex flex-row align-items-center justify-content-start">
+                            <div class="search_form_container">
+                                <div class="d-flex flex-lg-row flex-column align-items-center justify-content-start">
+                                    <form style="width:100%" onsubmit="return false;" class="d-block d-flex">
+                                        <div style="width:100%">
+                                            <div class="autocomplete" style="margin:auto; width:100%">
+                                                <div style="width:fit-content; margin:auto; display:flex">
+                                                    <input style="width:400px" type="text" class="text-auto" placeholder="Search for beaches, national parks">
+                                                    <button id="searchBtn" style='margin-left:10px; border-radius:0px; width:100px; border-color:#2e3f61; background-color:#f1f1f1; color:#000' onclick="loadBeaches()" class="search-submit btn btn-primary">SEARCH</button>
+                                                </div>
+                                            </div>
+                                            <div style="color:#f1f1f1; font-weight:bold; text-align:center; margin-top:10px">--OR--</div>
+                                            <div style="margin-top:10px" class="d-flex flex-lg-row flex-column align-items-center justify-content-start">
+                                                <div style="width:fit-content; margin:auto">
+                                                    <div class="autocomplete" style="width:250px; margin-left:5px">
+                                                        <input class="text-auto" id="provinceAuto" type="text" placeholder="Province">
+                                                    </div>
+                                                    <div class="autocomplete" style="width:250px; margin-left:5px">
+                                                        <input style="background-color:#c3c3c3" class="text-auto" id="cityAuto" type="text" placeholder="City" disabled>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rooms -->
+
+        <div class="rooms" style="margin-top:50px; padding-top:0px">
+            <div class="container" id="spotsdisplay">
+                <div class="row rooms_row" id="alllist">
+
+                </div>
+            </div>
+        </div>
+
+
+
+        <footer class="footer" style="position:fixed; bottom:0px; z-index: 10">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div style="height:60px" class="footer_content d-flex flex-md-row flex-column align-items-center align-items-start justify-content-start">
+                            <div class="copyright">
+                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                Copyright &copy;
+                                <script>
+                                    document.write(new Date().getFullYear());
+                                </script> All rights reserved </div>
+                            <div class="footer_logo" style="margin-right:150px; right:0px; left:unset">
+                                <div class="logo">
+                                    <a href="#">
+                                        <div style="width:220px">Canada Tourism</div>
+                                        <div>Explorer and Booking Service</div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+
+</body>
+
+</html>

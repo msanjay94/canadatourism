@@ -1,0 +1,670 @@
+<head>
+    <title>Canada Tourism - Travel</title>
+    <link rel="Stylesheet" type="text/css" href="https://static.travelsca.com/css/jquery-ui.css" />
+    <link rel="Stylesheet" type="text/css" href="https://static.travelsca.com/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://static.travelsca.com/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="https://static.travelsca.com/css/tours.css">
+    <link rel="stylesheet" type="text/css" href="https://static.travelsca.com/plugins/font-awesome-4.7.0/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="https://static.travelsca.com/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+    <link rel="stylesheet" type="text/css" href="https://static.travelsca.com/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+    <link rel="stylesheet" type="text/css" href="https://static.travelsca.com/plugins/OwlCarousel2-2.2.1/animate.css">
+    <link rel="stylesheet" type="text/css" href="https://static.travelsca.com/plugins/colorbox/colorbox.css">
+
+    <script type="text/javascript" src="https://static.travelsca.com/js/jquery.js"></script>
+    <script type="text/javascript" src="https://static.travelsca.com/js/jquery-ui.js"></script>
+    <script type="text/javascript" src="https://static.travelsca.com/js/login.js"></script>
+    <script type="text/javascript" src="https://static.travelsca.com/js/util.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="header_content d-flex flex-row align-items-center justify-content-start">
+                        <div class="logo">
+                            <a href="#">
+                                <div>Canada Tourism</div>
+                                <div>Explorer and Booking Service</div>
+                            </a>
+                        </div>
+                        <nav class="main_nav" style="width: 80%">
+                            <ul style="width:100%" class="d-flex flex-row align-items-center justify-content-start">
+                                <div style="width:60%; display:inherit">
+                                    <li><a href="/home">Home</a></li>
+                                    <li class="active"><a href="#">Travel</a></li>
+                                    <li id="bookings-tab" style="display:none"><a href="/booking">My Bookings</a></li>
+                                </div>
+                                <div id="loginDiv" style='width:40%; display: block'>
+                                    <li style='float:right; margin-right:0px'><a onclick="callRegister()" href='#'>Register</li>
+                                    <li style='float:right'><a onclick="callLogin()" href='#'>Login</a></li>
+                                </div>
+                                <div id="logoutDiv" style='width:40%; display: none'>
+                                    <li style='float:right; margin-right:0px'><a onclick="callLogout()" href='#'>Logout</a></li>
+                                    <li style='float:right'><a id="nameSpan" style="cursor:default">Hello !</a></li>
+                                </div>
+                            </ul>
+                        </nav>
+
+                        <div class="hamburger ml-auto"><i class="fa fa-bars" aria-hidden="true"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="search_box" style='margin-top:250px'>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div style='height: 150px' class="search_box_container d-flex flex-row align-items-center justify-content-start">
+                        <div class="search_form_container">
+                            <div class="d-flex flex-lg-row flex-column align-items-center justify-content-start">
+                                <form onsubmit="return false;" class="d-block d-flex">
+                                    <div class="d-flex flex-lg-row flex-column align-items-center justify-content-start">
+                                        <div class="autocomplete" style="width:300px;">
+                                            <input class="text-auto" id="fromCity" type="text" placeholder="From">
+                                        </div>
+                                        <div class="autocomplete" style="width:300px; margin-left:5px">
+                                            <input class="text-auto" id="toCity" type="text" placeholder="To">
+                                        </div>
+                                        <div class="control-group" style="width:300px; margin-left:5px">
+                                            <input class="text-auto" id="startDate" type="text" placeholder="When" />
+                                        </div>
+                                        <div class="control-group" style="width:100px; margin-left:5px;background-color:#f1f1f1; border: 1px solid black">
+                                            <select style="width:100%; text-align-last:center; font-size:16px; font-weight:lighter; background:transparent; height:46px; color:black; border:0px white" id="seats">
+                                                <option value="" disabled selected>Seats</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <button id="searchBtn" style='margin-left:10px; border-radius:0px; width:100px; border-color:#2e3f61; background-color:#f1f1f1; color:#000' onclick="busAvailabilty()" class="search-submit btn btn-primary">SEARCH</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="busoptionsDiv" class="search_box" style='margin-top:150px; display:none; margin-bottom:100px'>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div style="display:inherit; padding-left:5px; padding-right:0px; background:#f1f1f1; border: 2px solid #2e3f61; height:500px" class="search_box_container d-flex flex-row align-items-center justify-content-start">
+                        <div style="width:25%; height:100%; border-right:2px solid #d8d8d8"></div>
+                        <div style="width:75%; height:100%; display:inherit; padding: 10px">
+                            <div style="width:33%; height:100%; border: 2px solid #2e3f61">
+                                <div id="eoverlay" style="display:none; position: absolute;height: 100%;width: 100%;z-index: 1;background: black;opacity: 0.5;"></div>
+                                <div style="width:100%; height:10%; background-color:#2e3f61; text-align:center;">
+                                    <div style="width:fit-content; margin:auto">
+                                        <span style="display:table-row; color:#f1b323">Most popular</span>
+                                    </div>
+                                    <div style="width:fit-content; margin:auto">
+                                        <span style="color:#fff; font-weight:bold;">Economy</span>
+                                    </div>
+                                </div>
+                                <div style="height:90%; width:100%">
+                                    <table style="width:100%; height:65%">
+                                        <tr>
+                                            <td style="padding-left:20px; border-bottom:1px solid #bdbdbd">
+                                                <span style='color:#000; font-weight:bold'>Benefits per passenger</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-left:20px; border-bottom:1px solid #bdbdbd">
+                                                <i style='color:#000' class="fas fa-couch"></i>
+                                                <span style='color:#000; margin-left:30px'>Standard seater</span>
+                                            </td>
+                                        </tr>
+                                        <tr style="border-bottom:1px solid #f1f1f1">
+                                            <td style="padding-left:20px; border-bottom:1px solid #bdbdbd">
+                                                <i style='color:#000; width:20px' class="fas fa-pizza-slice"></i>
+                                                <span style='color:#000; margin-left:30px'>No complementary meals</span>
+                                            </td>
+                                        </tr>
+                                        <tr style="border-bottom:1px solid #f1f1f1">
+                                            <td style="padding-left:20px; border-bottom:1px solid #bdbdbd">
+                                                <i style='color:#000; width:20px' class="fas fa-suitcase"></i>
+                                                <span style='color:#000; margin-left:30px'>1 piece</span>
+                                            </td>
+                                        </tr>
+                                        <tr style="border-bottom:1px solid #f1f1f1">
+                                            <td style="padding-left:20px; border-bottom:1px solid #bdbdbd">
+                                                <i style='color:#000; width:20px' class="fas fa-credit-card"></i>
+                                                <span style='color:#000; margin-left:30px'>Changes:</span>
+                                                <span style="color: #000; font-weight:bold"> CAD 50.00</span>
+                                            </td>
+                                        </tr>
+                                        <tr style="border-bottom:1px solid #f1f1f1">
+                                            <td style="padding-left:20px; border-bottom:1px solid #bdbdbd">
+                                                <i style='color:#000; width:20px' class="fas fa-window-close"></i>
+                                                <span style='color:#000; margin-left:30px'>Cancellation:</span>
+                                                <span style="color: #000; font-weight:bold"> CAD 100.00</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <div style="width:100%; height:20%">
+                                        <div style="width:fit-content; margin:auto; display:inherit">
+                                            <span style="color:#2e3f61; margin-right:5px; font-weight:bold">CAD</span><span id="ecost" style="color:#2e3f61; font-size:30px; font-weight:bold">200.00</span>
+                                        </div>
+                                        <div style="width:fit-content; margin:auto">
+                                            <span style="color:#2e3f61; font-size:11px">(Total for <span style="font-weight:bold" id="ecount">all</span> passengers)</span>
+                                        </div>
+                                        <div style="width:fit-content; margin:auto">
+                                            <span id="eseats" style="color:#2e3f61; font-weight:bold">4</span><span style="color:#2e3f61"> seat(s) left</span>
+                                        </div>
+                                    </div>
+                                    <div style="width:100%; height:15%">
+                                        <button id="ebtn" style='margin-top:15px; width:93%; margin-left:10px; border-radius:0px; border-color:#2e3f61; background-color:#f1f1f1; color:#000' onclick="()" class="search-submit btn btn-primary">BOOK</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="width:33%; margin-left:10px; height:100%; border: 2px solid #2e3f61">
+                                <div id="foverlay" style="display:none; position: absolute;height: 100%;width: 100%;z-index: 1;background: black;opacity: 0.5;"></div>
+                                <div style="width:100%; height:10%; background-color:#2e3f61; text-align:center;">
+                                    <div style="width:fit-content; margin:auto; height:15px">
+
+                                    </div>
+                                    <div style="width:fit-content; margin:auto">
+                                        <span style="color:#fff; font-weight:bold;">Economy Plus</span>
+                                    </div>
+                                </div>
+                                <div style="height:90%; width:100%">
+                                    <table style="width:100%; height:65%">
+                                        <tr>
+                                            <td style="padding-left:20px; border-bottom:1px solid #bdbdbd">
+                                                <span style='color:#000; font-weight:bold'>Benefits per passenger</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-left:20px; border-bottom:1px solid #bdbdbd">
+                                                <i style='color:#000' class="fas fa-couch"></i>
+                                                <span style='color:#000; margin-left:30px'>45-degree recliner</span>
+                                            </td>
+                                        </tr>
+                                        <tr style="border-bottom:1px solid #f1f1f1">
+                                            <td style="padding-left:20px; border-bottom:1px solid #bdbdbd">
+                                                <i style='color:#000; width:20px' class="fas fa-pizza-slice"></i>
+                                                <span style='color:#000; margin-left:30px'>Complementary refreshments</span>
+                                            </td>
+                                        </tr>
+                                        <tr style="border-bottom:1px solid #f1f1f1">
+                                            <td style="padding-left:20px; border-bottom:1px solid #bdbdbd">
+                                                <i style='color:#000; width:20px' class="fas fa-suitcase"></i>
+                                                <span style='color:#000; margin-left:30px'>2 piece</span>
+                                            </td>
+                                        </tr>
+                                        <tr style="border-bottom:1px solid #f1f1f1">
+                                            <td style="padding-left:20px; border-bottom:1px solid #bdbdbd">
+                                                <i style='color:#000; width:20px' class="fas fa-credit-card"></i>
+                                                <span style='color:#000; margin-left:30px'>Changes:</span>
+                                                <span style="color: #000; font-weight:bold"> Free of charge</span>
+                                            </td>
+                                        </tr>
+                                        <tr style="border-bottom:1px solid #f1f1f1">
+                                            <td style="padding-left:20px; border-bottom:1px solid #bdbdbd">
+                                                <i style='color:#000; width:20px' class="fas fa-window-close"></i>
+                                                <span style='color:#000; margin-left:30px'>Cancellation:</span>
+                                                <span style="color: #000; font-weight:bold"> CAD 100.00</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <div style="width:100%; height:20%">
+                                        <div style="width:fit-content; margin:auto; display:inherit">
+                                            <span style="color:#2e3f61; margin-right:5px; font-weight:bold">CAD</span><span id="fcost" style="color:#2e3f61; font-size:30px; font-weight:bold">200.00</span>
+                                        </div>
+                                        <div style="width:fit-content; margin:auto">
+                                            <span style="color:#2e3f61; font-size:11px">(Total for <span style="font-weight:bold" id="fcount">all</span> passengers)</span>
+                                        </div>
+                                        <div style="width:fit-content; margin:auto">
+                                            <span id="fseats" style="color:#2e3f61; font-weight:bold">4</span><span style="color:#2e3f61"> seat(s) left</span>
+                                        </div>
+                                    </div>
+                                    <div style="width:100%; height:15%">
+                                        <button id="fbtn" style='margin-top:15px; width:93%; margin-left:10px; border-radius:0px; border-color:#2e3f61; background-color:#f1f1f1; color:#000' onclick="()" class="search-submit btn btn-primary">BOOK</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="width:34%; margin-left:10px; height:100%; border: 2px solid #2e3f61">
+                                <div id="loverlay" style="display:none; position: absolute;height: 100%;width: 100%;z-index: 1;background: black;opacity: 0.5;"></div>
+                                <div style="width:100%; height:10%; background-color:#2e3f61; text-align:center;">
+                                    <div style="width:fit-content; margin:auto; height:15px">
+
+                                    </div>
+                                    <div style="width:fit-content; margin:auto">
+                                        <span style="color:#fff; font-weight:bold;">Luxury</span>
+                                    </div>
+                                </div>
+                                <div style="height:90%; width:100%">
+                                    <table style="width:100%; height:65%">
+                                        <tr>
+                                            <td style="padding-left:20px; border-bottom:1px solid #bdbdbd">
+                                                <span style='color:#000; font-weight:bold'>Benefits per passenger</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-left:20px; border-bottom:1px solid #bdbdbd">
+                                                <i style='color:#000' class="fas fa-couch"></i>
+                                                <span style='color:#000; margin-left:30px'>Flat-bed seat</span>
+                                            </td>
+                                        </tr>
+                                        <tr style="border-bottom:1px solid #f1f1f1">
+                                            <td style="padding-left:20px; border-bottom:1px solid #bdbdbd">
+                                                <i style='color:#000; width:20px' class="fas fa-pizza-slice"></i>
+                                                <span style='color:#000; margin-left:30px'>Meal plan included</span>
+                                            </td>
+                                        </tr>
+                                        <tr style="border-bottom:1px solid #f1f1f1">
+                                            <td style="padding-left:20px; border-bottom:1px solid #bdbdbd">
+                                                <i style='color:#000; width:20px' class="fas fa-suitcase"></i>
+                                                <span style='color:#000; margin-left:30px'>2 piece</span>
+                                            </td>
+                                        </tr>
+                                        <tr style="border-bottom:1px solid #f1f1f1">
+                                            <td style="padding-left:20px; border-bottom:1px solid #bdbdbd">
+                                                <i style='color:#000; width:20px' class="fas fa-credit-card"></i>
+                                                <span style='color:#000; margin-left:30px'>Changes:</span>
+                                                <span style="color: #000; font-weight:bold"> Free of charge</span>
+                                            </td>
+                                        </tr>
+                                        <tr style="border-bottom:1px solid #f1f1f1">
+                                            <td style="padding-left:20px; border-bottom:1px solid #bdbdbd">
+                                                <i style='color:#000; width:20px' class="fas fa-window-close"></i>
+                                                <span style='color:#000; margin-left:30px'>Cancellation:</span>
+                                                <span style="color: #000; font-weight:bold"> Free of charge</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <div style="width:100%; height:20%">
+                                        <div style="width:fit-content; margin:auto; display:inherit">
+                                            <span style="color:#2e3f61; margin-right:5px; font-weight:bold">CAD</span><span id="lcost" style="color:#2e3f61; font-size:30px; font-weight:bold">200.00</span>
+                                        </div>
+                                        <div style="width:fit-content; margin:auto">
+                                            <span style="color:#2e3f61; font-size:11px">(Total for <span style="font-weight:bold" id="lcount">all</span> passengers)</span>
+                                        </div>
+                                        <div style="width:fit-content; margin:auto">
+                                            <span id="lseats" style="color:#2e3f61; font-weight:bold">4</span><span style="color:#2e3f61"> seat(s) left</span>
+                                        </div>
+                                    </div>
+                                    <div style="width:100%; height:15%">
+                                        <button id="lbtn" style='margin-top:15px; width:93%; margin-left:10px; border-radius:0px; border-color:#2e3f61; background-color:#f1f1f1; color:#000' onclick="()" class="search-submit btn btn-primary">BOOK</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer" style="position:fixed; bottom:0px; z-index: 10">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div style="height:60px" class="footer_content d-flex flex-md-row flex-column align-items-center align-items-start justify-content-start">
+                        <div class="copyright">
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            Copyright &copy;
+                            <script>
+                                document.write(new Date().getFullYear());
+                            </script> All rights reserved </div>
+                        <div class="footer_logo" style="margin-right:150px; right:0px; left:unset">
+                            <div class="logo">
+                                <a href="#">
+                                    <div style="width:220px">Canada Tourism</div>
+                                    <div>Explorer and Booking Service</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+<script language="javascript">
+    var dialog, form;
+    var cities;
+    var errorTimer;
+
+    $(document).ready(function() {
+        $("#searchBtn").hover(function() {
+            $(this).css({
+                "background-color": "#2e3f61",
+                "border-color": "#fff",
+                "color": "#fff"
+            });
+        }, function() {
+            $(this).stop().animate({
+                "background-color": "#f1f1f1",
+                "border-color": "#2e3f61",
+                "color": "#000"
+            }, 10);
+        });
+
+        $("#ebtn").hover(function() {
+            $(this).css({
+                "background-color": "#2e3f61",
+                "color": "#fff",
+                "font-weight": "bold"
+            });
+        }, function() {
+            $(this).stop().animate({
+                "background-color": "#f1f1f1",
+                "color": "#000",
+            }, 10);
+            $(this).css({
+                "font-weight": "normal"
+            });
+        });
+
+        $("#fbtn").hover(function() {
+            $(this).css({
+                "background-color": "#2e3f61",
+                "color": "#fff",
+                "font-weight": "bold"
+            });
+        }, function() {
+            $(this).stop().animate({
+                "background-color": "#f1f1f1",
+                "color": "#000",
+            }, 10);
+            $(this).css({
+                "font-weight": "normal"
+            });
+        });
+
+        $("#lbtn").hover(function() {
+            $(this).css({
+                "background-color": "#2e3f61",
+                "color": "#fff",
+                "font-weight": "bold"
+            });
+        }, function() {
+            $(this).stop().animate({
+                "background-color": "#f1f1f1",
+                "color": "#000",
+            }, 10);
+            $(this).css({
+                "font-weight": "normal"
+            });
+        });
+
+        loadCities(function(data) {
+            cities = data;
+            populateCities(data);
+        });
+        $("#startDate").datepicker({
+            numberOfMonths: 2,
+            minDate: 0,
+            onSelect: function(selected) {
+                $("#EndDate").datepicker("option", "minDate", selected)
+            }
+        });
+
+        isUserLoggedIn(function(name) {
+            $("#loginDiv").hide();
+            $("#logoutDiv #nameSpan").html("Hello " + name);
+            $("#logoutDiv").show();
+            $("#bookings-tab").show();
+        });
+
+        $('.dropdown-menu a').on('click', function() {
+            $('.dropdown-toggle').html($(this).html() + '<span class="caret"></span>');
+        });
+    });
+
+    function bookBus(busId, date, src, dst, seats) {
+        isUserLoggedIn(function(name) {
+            bookCall(busId, date, src, dst, seats);
+        }, function() {
+            callLogin(function() {
+                bookCall(busId, date, src, dst, seats);
+            });
+        });
+    }
+
+    function showOverlay(element) {
+        if (element) {
+            $(element).show();
+        }
+    }
+
+    function hideOverlay(element) {
+        if (element) {
+            $(element).hide();
+        }
+    }
+
+    function busAvailabilty() {
+        hideBusDiv();
+        const fromCity = $("#fromCity");
+        const toCity = $("#toCity");
+        const startDate = $("#startDate");
+        const seats = $("#seats");
+        const normalColor = {
+            "background-color": "#f1f1f1"
+        };
+        const errorColor = {
+            "background-color": "#fd6666"
+        };
+        const eoverlay = $("#eoverlay");
+        const foverlay = $("#foverlay");
+        const loverlay = $("#loverlay");
+
+        if (!fromCity.val() || fromCity.val().trim().length == 0 || !cities[fromCity.val()]) {
+            clearTimeout(errorTimer);
+            fromCity.css(normalColor);
+            fromCity.animate(errorColor, 300);
+            errorTimer = setTimeout(function() {
+                fromCity.animate(normalColor, 500);
+            }, 1000);
+            return;
+        }
+
+        if (!toCity.val() || toCity.val().trim().length == 0 || !cities[toCity.val()]) {
+            clearTimeout(errorTimer);
+            toCity.css(normalColor);
+            toCity.animate(errorColor, 300);
+            errorTimer = setTimeout(function() {
+                toCity.animate(normalColor, 500);
+            }, 1000);
+            return;
+        }
+
+        if (!startDate.val()) {
+            clearTimeout(errorTimer);
+            startDate.css(normalColor);
+            startDate.animate(errorColor, 300);
+            errorTimer = setTimeout(function() {
+                startDate.animate(normalColor, 500);
+            }, 1000);
+            return;
+        }
+
+        if (!seats.val()) {
+            clearTimeout(errorTimer);
+            seats.parent().css(normalColor);
+            seats.parent().animate(errorColor, 300);
+            errorTimer = setTimeout(function() {
+                seats.parent().animate(normalColor, 500);
+            }, 1000);
+            return;
+        }
+
+        var dateManipulation = startDate.val().split("/");
+        var newDate = dateManipulation[2] + '-' + dateManipulation[0] + '-' + dateManipulation[1];
+
+        var busBookingBody = {
+            "journeyDate": newDate,
+            "sourceLocationId": 0,
+            "destinationLocationId": 0
+        };
+
+        var param = "journeyDate=" + encodeURIComponent(newDate) + "&sourceLocationId=" + encodeURIComponent('0') + "&destinationLocationId=" + encodeURIComponent('0');
+
+        showLoading();
+
+        $.ajax({
+            url: '/getbusavailability',
+            data: param,
+            method: "POST",
+            success: function(result) {
+                hideLoading();
+                var data = result.data;
+                if (data.length < 3) {
+                    setTimeout(function() {
+                        dialogMsg("Oops", "Sorry there are no buses matching your search criteria");
+                    }, 500);
+                    return;
+                }
+                var eseats = data[2]["numberOfSeatsLeft"];
+                var eamount = data[2]["amount"];
+                var ebid = data[2]["busId"];
+                var fseats = data[1]["numberOfSeatsLeft"];
+                var famount = data[1]["amount"];
+                var fbid = data[1]["busId"];
+                var lseats = data[0]["numberOfSeatsLeft"];
+                var lamount = data[0]["amount"];
+                var lbid = data[0]["busId"];
+
+                const dst = cities[toCity.val()];
+                const src = cities[fromCity.val()];
+
+                if (eseats < seats.val()) {
+                    eamount = "N/A";
+                    eseats = 0;
+                    $("#ebtn").text("SOLD OUT").attr("disabled", true).attr("onclick", "");
+                    showOverlay(eoverlay);
+                } else {
+                    eamount = (eamount * seats.val()) + ".00";
+                    $("#ebtn").text("BOOK").attr("disabled", false).attr("onclick", "bookBus(" + ebid + ", \"" + newDate + "\", " + src + ", " + dst + ", " + seats.val() + ")");
+                    hideOverlay(eoverlay);
+                }
+
+                if (fseats < seats.val()) {
+                    famount = "N/A";
+                    fseats = 0;
+                    $("#fbtn").text("SOLD OUT").attr("disabled", true).attr("onclick", "");
+                    showOverlay(foverlay);
+                } else {
+                    famount = (famount * seats.val()) + ".00";
+                    $("#fbtn").text("BOOK").attr("disabled", false).attr("onclick", "bookBus(" + fbid + ", \"" + newDate + "\", " + src + ", " + dst + ", " + seats.val() + ")");
+                    hideOverlay(foverlay);
+                }
+
+                if (lseats < seats.val()) {
+                    lamount = "N/A";
+                    lseats = 0;
+                    $("#lbtn").text("BOOK").attr("disabled", true).attr("onclick", "");
+                    showOverlay(loverlay);
+                } else {
+                    lamount = (lamount * seats.val()) + ".00";
+                    $("#lbtn").text("BOOK").attr("disabled", false).attr("onclick", "bookBus(" + lbid + ", \"" + newDate + "\", " + src + ", " + dst + ", " + seats.val() + ")");
+                    hideOverlay(loverlay);
+                }
+
+                $("#eseats").text(eseats);
+                $("#ecost").text(eamount);
+                $("#fseats").text(fseats);
+                $("#fcost").text(famount);
+                $("#lseats").text(lseats);
+                $("#lcost").text(lamount);
+                $("#ecount").text(seats.val());
+                $("#fcount").text(seats.val());
+                $("#lcount").text(seats.val());
+
+                showBusDiv();
+            },
+            error: function(errorThrown) {
+                console.log(errorThrown);
+            }
+        });
+
+    }
+
+    function showBusDiv() {
+        $("#busoptionsDiv").css({
+            "opacity": "0.0"
+        }).show().animate({
+            "opacity": "1.0"
+        }, 300);
+    }
+
+    function hideBusDiv() {
+        $("#busoptionsDiv").hide();
+    }
+
+    function bookCall(busId, date, src, dst, seats) {
+
+        var bookingBody = {
+            "busId": busId,
+            "journeyDate": date,
+            "sourceLocationId": src,
+            "destinationLocationId": dst,
+            "noOfSeats": seats
+        };
+
+        var param = $.param(bookingBody);
+
+        $.ajax({
+            url: '/makebooking',
+            data: param,
+            method: "POST",
+            success: function(result) {
+                dialogMsg("Booking confirmation", "Ticket added to cart, proceed to payment", function() {
+                    window.location.href = "/booking";
+                });
+            },
+            error: function(errorThrown) {
+                console.log(errorThrown);
+            }
+        });
+    }
+
+    function callLogin(callback) {
+        openLoginDiv(function(data) {
+            var name = data.userFullname;
+            $("#loginDiv").hide();
+            $("#logoutDiv #nameSpan").html("Hello " + name);
+            $("#logoutDiv").show();
+            $("#bookings-tab").show();
+            if (callback) {
+                callback();
+            }
+        });
+    }
+
+    function callLogout(callback) {
+        userLogout(function() {
+            $("#logoutDiv").hide();
+            $("#logoutDiv #nameSpan").html("Hello !");
+            $("#loginDiv").show();
+            $("#bookings-tab").show();
+            dialogMsg("Logged out", "Successfully logged out !", null, "30px");
+            if (callback) {
+                callback();
+            }
+        });
+    }
+
+    function callRegister() {
+        openRegisterDiv();
+    }
+</script>

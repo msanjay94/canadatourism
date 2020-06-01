@@ -1,0 +1,521 @@
+<head>
+    <title>Canada Tourism - Travel</title>
+
+    <link rel="Stylesheet" type="text/css" href="https://static.travelsca.com/css/jquery-ui.css" />
+    <link rel="Stylesheet" type="text/css" href="https://static.travelsca.com/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://static.travelsca.com/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="https://static.travelsca.com/css/tours.css">
+    <link rel="stylesheet" type="text/css" href="https://static.travelsca.com/plugins/font-awesome-4.7.0/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="https://static.travelsca.com/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+    <link rel="stylesheet" type="text/css" href="https://static.travelsca.com/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+    <link rel="stylesheet" type="text/css" href="https://static.travelsca.com/plugins/OwlCarousel2-2.2.1/animate.css">
+    <link rel="stylesheet" type="text/css" href="https://static.travelsca.com/plugins/colorbox/colorbox.css">
+
+    <script type="text/javascript" src="https://static.travelsca.com/js/jquery.js"></script>
+    <script type="text/javascript" src="https://static.travelsca.com/js/jquery-ui.js"></script>
+    <script type="text/javascript" src="https://static.travelsca.com/js/login.js"></script>
+    <script type="text/javascript" src="https://static.travelsca.com/js/util.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="header_content d-flex flex-row align-items-center justify-content-start">
+                        <div class="logo">
+                            <a href="#">
+                                <div>Canada Tourism</div>
+                                <div>Explorer and Booking Service</div>
+                            </a>
+                        </div>
+                        <nav class="main_nav" style="width: 80%">
+                            <ul style="width:100%" class="d-flex flex-row align-items-center justify-content-start">
+                                <div style="width:60%; display:inherit">
+                                    <li><a href="/home">Home</a></li>
+                                    <li><a href="/travel">Travel</a></li>
+                                    <li class="active" id="bookings-tab"><a href="#">My Bookings</a></li>
+                                </div>
+                                <div id="loginDiv" style='width:40%; display: block'>
+                                    <li style='float:right; margin-right:0px'><a onclick="callRegister()" href='#'>Register</li>
+                                    <li style='float:right'><a onclick="callLogin()" href='#'>Login</a></li>
+                                </div>
+                                <div id="logoutDiv" style='width:40%; display: none'>
+                                    <li style='float:right; margin-right:0px'><a onclick="callLogout()" href='#'>Logout</a></li>
+                                    <li style='float:right'><a id="nameSpan" style="cursor:default">Hello !</a></li>
+                                </div>
+                            </ul>
+                        </nav>
+
+                        <div class="hamburger ml-auto"><i class="fa fa-bars" aria-hidden="true"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container" style="margin-top:150px; font-size:20px;">
+        <a href="#">
+            <div style="color:#2e3f61;margin-left:115px">Pending Bookings</div>
+        </a>
+    </div>
+    <div id="pendingBookings" class="search_box" style='margin-top:130px;'>
+
+    </div>
+
+    <div class="container" style="margin-top:-70px; font-size:20px;">
+        <a href="#">
+            <div style="color:#2e3f61;margin-left:115px">Successful Bookings</div>
+        </a>
+    </div>
+    <div id="successfulBookings" class="search_box" style='margin-top:130px; margin-bottom:100px'>
+
+    </div>
+
+    <footer class="footer" style="position:fixed; bottom:0px;z-index:1">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div style="height:60px" class="footer_content d-flex flex-md-row flex-column align-items-center align-items-start justify-content-start">
+                        <div class="copyright">
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            Copyright &copy;
+                            <script>
+                                document.write(new Date().getFullYear());
+                            </script> All rights reserved </div>
+                        <div class="footer_logo" style="margin-right:150px; right:0px; left:unset">
+                            <div class="logo">
+                                <a href="#">
+                                    <div style="width:220px">Canada Tourism</div>
+                                    <div>Explorer and Booking Service</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+<script language="javascript">
+    var dialog;
+    const cardNumberRegex = /^[0-9]{16}$/
+    const mmyyRegex = /(^[0]?[1-9][0-9]{2}$)|(^1[0-2]{1}[0-9]{2}$)/
+    const cvvRegex = /^[0-9]{3}$/
+    const paymentUrl = "/makepayment";
+    const cardDiv = '<div style="display:none" id="card-dialog-form" title="Card Details">\
+			<p class="validateTips">' + defaultTip + '</p>\
+			<form>\
+				<fieldset>\
+					<label for="card">Cardholder Name</label>\
+					<input type="text" name="card" id="ccName" value="" class="text ui-widget-content ui-corner-all">\
+					<label for="card">Card Number</label>\
+					<input type="text" name="card" id="ccCard" maxlength="16" class="text ui-widget-content ui-corner-all">\
+					<div>\
+						<div style="float: left;width: 50%;">\
+							<label for="card">Expiry (MMYY)</label>\
+							<input style="width:110px" type="text" name="mmyy" id="ccMmyy" maxlength="4" class="text ui-widget-content ui-corner-all">\
+						</div>\
+                        <div style="float: right;width: 45%;margin-right:15px; text-align:right">\
+                            <div>\
+							    <label style="margin-right:2px" for="card">CVV</label>\
+                                <div>\
+                                    <input type="text" style="width:60px; float:right" name="cvv" id="ccCvv" maxlength="3" class="text ui-widget-content ui-corner-all">\
+                                </div>\
+                            </div>\
+						</div>\
+					</div>\
+					<!-- Allow form submission with keyboard without duplicating the dialog button -->\
+					<input type="submit" tabindex="-1" style="position:absolute; top:-1000px">\
+				</fieldset>\
+			</form>\
+			<div style="display:none; margin:auto; height:30px" id="loginLoader" class="loader"></div>\
+		</div>';
+
+    $(document).ready(function() {
+
+
+        isUserLoggedIn(function(name) {
+            $("#loginDiv").hide();
+            $("#logoutDiv #nameSpan").html("Hello " + name);
+            $("#logoutDiv").show();
+            $("#bookings-tab").show();
+            retriveBooking();
+        }, function() {
+            window.location.href = "/travel";
+        });
+
+    });
+
+    function retriveBooking() {
+        const cookies = document.cookie.split(";");
+        var jwtCookieValue = null;
+        for (var index in cookies) {
+            var cookie = cookies[index].trim();
+            var name = cookie.split("=")[0];
+            var value = cookie.split("=")[1];
+            if (name == "jwtToken") {
+                jwtCookieValue = value;
+                break;
+            }
+        }
+        var count = 0;
+        $.ajax({
+            url: '/getbooking',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("Authorization", 'Bearer ' + jwtCookieValue);
+            },
+            method: "GET",
+            success: function(data) {
+                $("#pendingBookings").html("");
+                $("#successfulBookings").html("");
+                if (data.data.length == 0) {
+
+                } else {
+                    for (var index in data.data) {
+                        var booking = data.data[index];
+                        var bookingCard = '<div class="container" style="max-width:800px; height:100px; margin-top:10px">\
+                            <div class="row">\
+                                <div class="col">\
+                                    <div style="display:inherit; padding-left:5px; padding-right:0px; background:#f1f1f1; border: 2px solid #2e3f61; height:100px" class="search_box_container d-flex flex-row align-items-center justify-content-start">\
+                                        <div style="width:80%; height:100%; border-right:2px solid #d8d8d8">\
+                                            <table style="height:100%; width:100%">\
+                                                <tr>\
+                                                    <td style="width:40%"><div style="font-size:11px; color:#2e3f61">From</div><div style="font-weight:bold; color:#2e3f61">' + booking.sourceLocation + '</div></td>\
+                                                    <td style="width:35%"><div style="font-size:11px; color:#2e3f61">Journey Date</div><div style="font-weight:bold; color:#2e3f61">' + booking.journeyDate + '</div></td>\
+                                                    <td rowspan="2" style="width:25%"><div style="font-size:11px; color:#2e3f61">Book Amount</div><div style="font-weight:bold; color:#2e3f61"><span>CAD </span><span style="font-size:35px">' + booking.bookingAmount + '.00</span></div></td>\
+                                                </tr>\
+                                                <tr>\
+                                                    <td style="width:40%"><div style="font-size:11px; color:#2e3f61">Destination</div><div style="font-weight:bold; color:#2e3f61">' + booking.destinationLocation + '</div></td>\
+                                                    <td style="width:35%"><div style="font-size:11px; color:#2e3f61">Seats</div><div style="font-weight:bold; color:#2e3f61">' + booking.noOfSeats + '</div></td>\
+                                                </tr>\
+                                            </table>\
+                                        </div>\
+                                        <div style="width:20%; height:100%; ">';
+                        if (booking.paid === false) {
+                            bookingCard += '<button class="paybtn" style="cursor:pointer; height:40px; margin-top:5px; margin-left:6px; width:93%; border-radius:0px; border-color:#2e3f61; background-color:#f1f1f1; color:#000" onclick="makePayment(' + booking.bookingId + ', ' + booking.bookingAmount + ')" class="search-submit btn btn-primary">PAY</button>';
+                            bookingCard += '<button class="cncbtn" style="cursor:pointer; height:40px; margin-top:5px; margin-left:6px; width:93%; border-radius:0px; border-color:#2e3f61; background-color:#2e3f61; color:#fff" onclick="cancelBooking(' + booking.bookingId + ')" class="search-submit btn btn-primary">CANCEL</button>';
+                        } else {
+                            bookingCard += '<button class="ticketbtn" style="cursor:pointer; height:40px; margin-top:5px; margin-left:6px; width:93%; border-radius:0px; border-color:#2e3f61; background-color:#f1f1f1; color:#000" onclick="sendTicket(' + booking.bookingId + ')" class="search-submit btn btn-primary">Send Ticket</button>';
+                            bookingCard += '<button class="cncbtn" style="cursor:pointer; height:40px; margin-top:5px; margin-left:6px; width:93%; border-radius:0px; border-color:#2e3f61; background-color:#2e3f61; color:#fff" onclick="cancelBooking(' + booking.bookingId + ')" class="search-submit btn btn-primary">CANCEL</button>';
+                        }
+                        bookingCard += '</div>\
+                                    </div>\
+                                </div>\
+                            </div>\
+                        </div>';
+                        if (booking.paid === false) {
+                            $("#pendingBookings").append(bookingCard);
+                        } else {
+                            $("#successfulBookings").append(bookingCard);
+                        }
+                    }
+                }
+
+                $(".paybtn").hover(function() {
+                    $(this).css({
+                        "background-color": "#2e3f61",
+                        "border-color": "#fff",
+                        "color": "#fff"
+                    });
+                }, function() {
+                    $(this).stop().animate({
+                        "background-color": "#f1f1f1",
+                        "border-color": "#2e3f61",
+                        "color": "#000"
+                    }, 10);
+                });
+
+                $(".ticketbtn").hover(function() {
+                    $(this).css({
+                        "background-color": "#2e3f61",
+                        "border-color": "#fff",
+                        "color": "#fff"
+                    });
+                }, function() {
+                    $(this).stop().animate({
+                        "background-color": "#f1f1f1",
+                        "border-color": "#2e3f61",
+                        "color": "#000"
+                    }, 10);
+                });
+
+                $(".cncbtn").hover(function() {
+                    $(this).css({
+                        "background-color": "#ec4343",
+                        "border-color": "#2e3f61",
+                        "color": "#fff"
+                    });
+                }, function() {
+                    $(this).stop().animate({
+                        "background-color": "#2e3f61",
+                        "border-color": "#f1f1f1",
+                        "color": "#fff"
+                    }, 10);
+                });
+                $.each(data.data, function(idx, obj) {
+                    count++;
+                    var paid = "Payment pending";
+                    var button = "";
+                    if (obj.paid == 1) {
+                        paid = "Paid";
+                        button = "<button onclick='sendTicket(" + obj.bookingId + ")'>Send Ticket</button>\<button onclick='cancelBooking(" + obj.bookingId + ")'>Cancel Booking</button>";
+                    } else {
+                        button = "<button onclick='makePayment(" + obj.bookingId + ", " + obj.bookingAmount + ")'>Make payment</button>";
+                    }
+
+                    var element = '<div style="background-color:#aaa;">\
+						<p>' + obj.sourceLocation + '</p>\
+						<p>' + obj.destinationLocation + '</p>\
+						<p>' + obj.bookingDate + '</p>\
+						<p>' + obj.journeyDate + '</p>\
+						<p>' + obj.bookingAmount + '</p>\
+						<p>' + obj.noOfSeats + '</p>\
+						<p id=paid' + count + '>' + paid + '</p>\
+						<p>' + button + '</p>\
+						</div>';
+                    $(".book-retrieve").append(element);
+                })
+            },
+            error: function(errorThrown) {
+                console.log(errorThrown);
+            }
+        });
+    }
+
+
+    function cancelBooking(bookingId, callback) {
+        var bookingBody = {
+            "bookingId": bookingId
+        };
+        var param = $.param(bookingBody);
+        deleteBooking(param);
+    }
+
+    function callLogin(callback) {
+        openLoginDiv(function(data) {
+            var name = data.userFullname;
+            $("#loginDiv").hide();
+            $("#logoutDiv #nameSpan").html("Hello " + name);
+            $("#logoutDiv").show();
+            $("#bookings-tab").show();
+            if (callback) {
+                callback();
+            }
+        });
+    }
+
+    function callLogout(callback) {
+        userLogout(function() {
+            $("#logoutDiv").hide();
+            $("#logoutDiv #nameSpan").html("Hello !");
+            $("#loginDiv").show();
+            $("#bookings-tab").show();
+            dialogMsg("Logged out", "Successfully logged out !", function() {
+                if (callback) {
+                    callback();
+                }
+                window.location.reload();
+            }, "30px");
+        });
+    }
+
+
+    function deleteBooking(param) {
+        showLoading();
+        $.ajax({
+            url: '/deletebooking',
+            data: param,
+            method: "POST",
+            success: function(data) {
+                hideLoading();
+                setTimeout(function() {
+                    dialogMsg("Success", "Booking has been cancelled.", function() {
+                        window.location.reload();
+                    }, "30px")
+                }, 400);
+            },
+            error: function(errorThrown) {
+                console.log(errorThrown);
+                dialogMsg("Error", "Please try again after some time.", null, "30px")
+            }
+        });
+    }
+
+    function sendTicket(bookingId) {
+        var bookingBody = {
+            "bookingId": bookingId
+        };
+        var param = $.param(bookingBody);
+
+        showLoading();
+
+        $.ajax({
+            url: '/sendticket',
+            data: param,
+            method: "POST",
+            success: function(data) {
+                hideLoading();
+                setTimeout(function() {
+                    dialogMsg("Success", "Ticket sent your email.", null, "30px")
+                }, 700);
+            },
+            error: function(errorThrown) {
+                console.log(errorThrown);
+                setTimeout(function() {
+                    dialogMsg("Error", "Please try again after some time.", null, "30px")
+                }, 300);
+            }
+        });
+    }
+
+    function openPaymentDiv(bookingId, bookingAmount, callback) {
+        addOverlayElement();
+        if ($("#card-dialog-form").length == 0) {
+            $("body").append(cardDiv);
+        }
+        dialog = $("#card-dialog-form").dialog({
+            autoOpen: false,
+            height: 450,
+            width: 350,
+            modal: true,
+            show: {
+                effect: "clip",
+                duration: 300
+            },
+            hide: {
+                effect: "clip",
+                duration: 300
+            },
+            buttons: {
+                "Pay": function() {
+                    userPayment(bookingId, bookingAmount, callback);
+                },
+                Cancel: function() {
+                    clearFields();
+                    updateTips($("#card-dialog-form .validateTips"), "");
+                    dialog.dialog("close");
+                }
+            },
+            close: function() {
+                form[0].reset();
+                $("#card-dialog-form").remove();
+                hideOverlayElement();
+            }
+        });
+
+        form = dialog.find("form").on("submit", function(event) {
+            event.preventDefault();
+        });
+
+        dialog.dialog("open");
+
+    }
+
+    function userPayment(bookingId, bookingAmount, callback) {
+        var name = $("#ccName");
+        var card = $("#ccCard");
+        var mmyy = $("#ccMmyy");
+        var cvv = $("#ccCvv");
+        var tips = $("#card-dialog-form .validateTips");
+        var errorClass = "ui-state-error";
+
+        if (!name.val() || name.val().trim().length == 0) {
+            name.addClass(errorClass);
+            updateTips(tips, "Please enter cardholder name !");
+            return;
+        } else {
+            name.removeClass(errorClass);
+        }
+        if (!card.val() || card.val().trim().length == 0) {
+            card.addClass(errorClass);
+            updateTips(tips, "Please enter card number !");
+            return;
+        } else {
+            card.removeClass(errorClass);
+        }
+        if (!cardNumberRegex.test(card.val())) {
+            card.addClass(errorClass);
+            updateTips(tips, "Please check your card number !");
+            return;
+        }
+        if (!mmyyRegex.test(mmyy.val())) {
+            mmyy.addClass(errorClass);
+            updateTips(tips, "Please check the expiry month and year !");
+            return;
+        }
+        var cyy = new Date().getFullYear().toString();
+        cyy = Number(cyy[2] + cyy[3]);
+        var cmm = new Date().getMonth() + 1;
+        var mm = mmyy.val().toString();
+        var yy = Number(mm[2] + mm[3]);
+        mm = Number(mm[0] + mm[1]);
+        if (yy < cyy) {
+            mmyy.addClass(errorClass);
+            updateTips(tips, "Card expired. Please use a different card !");
+            return;
+        } else if (yy == cyy) {
+            if (mm <= cmm) {
+                mmyy.addClass(errorClass);
+                updateTips(tips, "Card expired/expiring in one month. Please use a different card !");
+                return;
+            } else {
+                mmyy.removeClass(errorClass);
+            }
+        } else {
+            mmyy.removeClass(errorClass);
+        }
+        if (!cvvRegex.test(cvv.val())) {
+            cvv.addClass(errorClass);
+            updateTips(tips, "Please enter valid CVV !");
+            return;
+        } else {
+            cvv.removeClass(errorClass);
+        }
+
+        var button = $($(".ui-dialog-buttonset button")[0]);
+        disableButton(button);
+        updateTips(tips, "Processing payment...");
+        $("#loginLoader").show();
+        payment(bookingId, bookingAmount, card.val(), button, callback);
+    }
+
+    function payment(bookingId, bookingAmount, cardNumber, button, callback) {
+        var param = "bookingId=" + encodeURIComponent(bookingId);
+        param += "&bookingAmount=" + encodeURIComponent(bookingAmount);
+        param += "&cardNumber=" + encodeURIComponent(cardNumber);
+
+        $.ajax({
+            url: paymentUrl,
+            data: param,
+            method: "POST",
+            success: function(result) {
+                enableButton(button);
+                clearFields();
+                dialog.dialog("close");
+                setTimeout(function() {
+                    dialogMsg("Success", "Payment successful.", function() {
+                        if (callback) {
+                            callback(result.data);
+                        }
+                    });
+                }, 300);
+            },
+            error: function(result) {
+                x = result;
+                updateTips($("#card-dialog-form .validateTips"), result.errorMsg || result.responseJSON.data.message);
+                enableButton(button);
+                clearFields();
+            }
+        });
+    }
+
+    function makePayment(bookingId, bookingAmount) {
+        openPaymentDiv(bookingId, bookingAmount, function(data) {
+            window.location.reload();
+        });
+    }
+</script>

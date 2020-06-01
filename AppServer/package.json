@@ -1,0 +1,13 @@
+{
+    "name": "app_server",
+    "version": "1.0.0",
+    "description": "Container image of app server",
+    "author": "Sanjaykumar Muthukumar (sanjay.m@dal.ca)",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js"
+    },
+    "dependencies": {
+        "express": "^4.17.1"
+    }
+}
